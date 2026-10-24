@@ -88,10 +88,11 @@
   }
   .demonstrates strong { color: var(--ink); font-weight: 600; }
 
-  .flow { margin: 18px 0 0; padding: 0; list-style: none; counter-reset: flow; font-size: 15px; line-height: 1.5; }
+  .flow-label { margin: 18px 0 8px; color: var(--ink-muted); font-size: 12.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .flow { margin: 0; padding: 0; list-style: none; counter-reset: flow; font-size: 15px; line-height: 1.5; }
   .flow li {
     position: relative; counter-increment: flow;
-    padding: 0 0 8px 34px; color: var(--ink-soft);
+    padding: 0 0 5px 34px; color: var(--ink-soft);
   }
   .flow li::before {
     content: counter(flow);
@@ -144,7 +145,7 @@
   <div class="wrap">
     <h1>Selected Work</h1>
     <p class="prepared">Prepared for the University of Phoenix Learning Experience Designer team</p>
-    <p class="intro">These four projects show different sides of how I approach learning experience design: authentic practice, custom interaction, reusable production systems, and AI-assisted quality assurance. I picked them because together they cover both the learner-facing craft and the systems thinking behind how I build, scale, and evaluate learning.</p>
+    <p class="intro">These four projects cover authentic practice, custom interaction, reusable production systems, and AI-assisted quality assurance. Together they show both the learner-facing craft and the systems thinking behind how I build, scale, and evaluate learning.</p>
   </div>
 </header>
 
@@ -210,11 +211,12 @@
         <p class="tag"><span class="num">04</span> Agentic AI workflow · QA</p>
         <h2>Persona QA</h2>
         <p class="synopsis">Persona testing asks whether a build still works for someone who is rushed, new to the topic, or in a situation the design didn't plan for. This tool drafts a panel of test personas from a project description, then exports briefs or a prompt that has an AI model play one persona through the real build. The AI reports what it ran into; a person decides what counts.</p>
-        <ol class="flow" aria-label="How a test run works">
+        <p class="flow-label" id="flow-label">How it works</p>
+        <ol class="flow" aria-labelledby="flow-label">
           <li>Describe the project and its key moments.</li>
-          <li>The tool drafts six personas, each with adjustable Challenge and Journey settings.</li>
-          <li>A model plays one persona, one action per turn, while a person performs each action in the real build and reports back what's on screen.</li>
-          <li class="human">A person scores the transcript against a rubric and classes every finding as a model error, a real tool issue, or a testing mistake.</li>
+          <li>AI drafts six test personas.</li>
+          <li>AI plays one through the real build; a person relays each action.</li>
+          <li class="human">A person scores every finding against a rubric.</li>
         </ol>
         <div class="actions">
           <a class="cta" href="https://mcroney531-ctrl.github.io/ELC569-Slider/" target="_blank" rel="noopener">View project<span class="sr-only"> (opens in a new tab)</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3h8v8M13 3 3 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
