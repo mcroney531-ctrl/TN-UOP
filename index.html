@@ -83,19 +83,28 @@
 
 
   .flow-label { margin: 18px 0 8px; color: var(--ink-muted); font-size: 12.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
-  .flow { margin: 0; padding: 0; list-style: none; counter-reset: flow; font-size: 15px; line-height: 1.5; }
+  .flow { margin: 0; padding: 0; list-style: none; font-size: 15px; line-height: 1.45; }
   .flow li {
-    position: relative; counter-increment: flow;
-    padding: 0 0 5px 34px; color: var(--ink-soft);
+    position: relative;
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 0 0 12px; color: var(--ink-soft);
   }
-  .flow li::before {
-    content: counter(flow);
-    position: absolute; left: 0; top: 1px;
-    width: 22px; height: 22px; border-radius: 50%;
+  .flow li:last-child { padding-bottom: 0; }
+  /* connector: runs from the bottom of this node to the top of the next */
+  .flow li:not(:last-child)::after {
+    content: ""; position: absolute; left: 15px; top: 32px; bottom: 0;
+    width: 2px; background: #b9bec6;
+  }
+  .flow li:nth-last-child(2)::after { background: var(--red-bright); }
+  .flow .node {
+    flex: none; display: grid; place-items: center;
+    width: 32px; height: 32px; border-radius: 50%;
     background: var(--surface); border: 1px solid var(--line);
-    color: var(--ink); font-size: 12px; font-weight: 700; line-height: 20px; text-align: center;
+    color: var(--red);
   }
-  .flow li.human::before { background: var(--red-bright); border-color: var(--red-bright); color: #fff; }
+  .flow .node svg { width: 17px; height: 17px; }
+  .flow .text { padding-top: 5px; }
+  .flow li.human .node { background: var(--red-bright); border-color: var(--red-bright); color: #fff; }
 
   .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; margin: 22px 0 0; }
   .cta {
@@ -205,10 +214,10 @@
         <p class="synopsis">Persona testing asks whether a build still works for someone who is rushed, new to the topic, or in a situation the design didn't plan for. This tool drafts a panel of test personas from a project description, then exports briefs or a prompt that has an AI model play one persona through the real build. The AI reports what it ran into; a person decides what counts.</p>
         <p class="flow-label" id="flow-label">How it works</p>
         <ol class="flow" aria-labelledby="flow-label">
-          <li>Describe the project and its key moments.</li>
-          <li>AI drafts six test personas.</li>
-          <li>AI plays one through the real build; a person relays each action.</li>
-          <li class="human">A person scores every finding against a rubric.</li>
+          <li><span class="node" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg></span><span class="text">Describe the project and its key moments.</span></li>
+          <li><span class="node" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20v-1a5 5 0 0 1 5-5h3a5 5 0 0 1 5 5v1"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.2A5 5 0 0 1 21.5 19v1"/></svg></span><span class="text">AI drafts six test personas.</span></li>
+          <li><span class="node" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5v14l11-7z"/></svg></span><span class="text">AI plays one through the real build; a person relays each action.</span></li>
+          <li class="human"><span class="node" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20.5a8 8 0 0 1 16 0z"/></svg></span><span class="text">A person scores every finding against a rubric.</span></li>
         </ol>
         <div class="actions">
           <a class="cta" href="https://mcroney531-ctrl.github.io/ELC569-Slider/" target="_blank" rel="noopener">View project<span class="sr-only"> (opens in a new tab)</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3h8v8M13 3 3 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
