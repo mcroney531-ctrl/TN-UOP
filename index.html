@@ -154,7 +154,32 @@
     .project { padding: 44px 0; }
   }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+  /* ---------- Motion ----------
+     Intro: CSS-only, plays once on load.
+     Projects: hidden only when the head script has added .js-motion (JS on,
+     IntersectionObserver available, motion allowed), so content is never
+     hidden without the code that reveals it. */
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: no-preference) {
+    header h1 { animation: rise .5s cubic-bezier(.2, .7, .2, 1) both; }
+    header .intro { animation: rise .5s cubic-bezier(.2, .7, .2, 1) .12s both; }
+  }
+  .js-motion .project > * {
+    opacity: 0; transform: translateY(18px);
+    transition: opacity .55s ease-out, transform .55s cubic-bezier(.2, .7, .2, 1), box-shadow .2s ease;
+  }
+  .js-motion .project.in > * { opacity: 1; transform: none; }
+  .js-motion .project.in > :nth-child(2) { transition-delay: .13s, .13s, 0s; }
+  @media print { .js-motion .project > * { opacity: 1 !important; transform: none !important; } }
 </style>
+<script>
+  // Opt in to scroll reveals only when they can run; otherwise nothing is ever hidden.
+  try {
+    if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches)
+      document.documentElement.classList.add('js-motion');
+  } catch (e) {}
+</script>
 </head>
 <body>
 
@@ -276,5 +301,38 @@
   </div>
 </footer>
 
+<script>
+  (function () {
+    var root = document.documentElement;
+    if (!root.classList.contains('js-motion')) return;
+    try {
+      var projects = [].slice.call(document.querySelectorAll('.project'));
+      var show = function (el) { el.classList.add('in'); io.unobserve(el); };
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) show(e.target); });
+      }, { rootMargin: '0px 0px -12% 0px' });
+      projects.forEach(function (el) { io.observe(el); });
+
+      // Never strand a section: anything already scrolled past, or receiving keyboard focus, shows at once.
+      var ticking = false;
+      window.addEventListener('scroll', function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          ticking = false;
+          projects.forEach(function (el) {
+            if (!el.classList.contains('in') && el.getBoundingClientRect().top < 0) show(el);
+          });
+        });
+      }, { passive: true });
+      document.addEventListener('focusin', function (e) {
+        var p = e.target.closest && e.target.closest('.project');
+        if (p && !p.classList.contains('in')) show(p);
+      });
+    } catch (err) {
+      root.classList.remove('js-motion');
+    }
+  })();
+</script>
 </body>
 </html>
